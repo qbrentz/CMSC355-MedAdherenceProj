@@ -78,7 +78,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <distributionManagement>
         <repository>
             <id>releases</id>
-            <url>jdbc:postgresql://localhost:5432/CMSC355-proj</url>
+            <url>http://127.0.0.1:5432/CMSC355-proj</url>
         </repository>
     </distributionManagement>
 
