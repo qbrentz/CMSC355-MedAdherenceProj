@@ -17,6 +17,9 @@ public class Patient {
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
     private List<Prescription> prescriptions;
 
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    private List<MedicationLog> medicationLogs;
+
     public Patient(){}
     
     public Patient(String name, String email) {

@@ -1,10 +1,14 @@
 package com.example.medadherence.services;
 
 import com.example.medadherence.models.Notification;
+import com.example.medadherence.models.Prescription;
 import com.example.medadherence.repositories.NotificationRepository;
+import com.example.medadherence.repositories.PrescriptionRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +16,28 @@ import java.util.Optional;
 public class NotificationService {
 
     @Autowired
-    private NotificationRepository notificationRepository;
+    
+
+    private final NotificationRepository notificationRepository;
+    private final PrescriptionRepository prescriptionRepository;
+
+    public NotificationService(NotificationRepository notificationRepository, PrescriptionRepository prescriptionRepository) {
+        this.notificationRepository = notificationRepository;
+        this.prescriptionRepository = prescriptionRepository;
+    }
+
+    public void checkAndNotifyLowStock() {
+        List<Prescription> prescriptions = prescriptionRepository.findAll();
+        for (Prescription prescription : prescriptions) {
+            if (prescription.getInventory() < 5) {  // Alert if less than 5 doses left
+                Notification notification = new Notification();
+                notification.setPatient(prescription.getPatient());
+                notification.setMessage("Low stock alert: " + prescription.getMedName() + " is running low.");
+                notification.setTimestamp(LocalDateTime.now());
+                notificationRepository.save(notification);
+            }
+        }
+    }
 
     // Get all notifications
     public List<Notification> getAllNotifications() {

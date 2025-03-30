@@ -14,6 +14,10 @@ public class MedicationLog {
     @JoinColumn(name = "prescription_id")
     private Prescription prescription;
 
+    @ManyToOne
+    @JoinColumn(name = "patient_id", nullable = false)
+    private Patient patient;
+
     public MedicationLog() {}
 
     public MedicationLog(LocalDateTime timestamp, Prescription prescription) {
