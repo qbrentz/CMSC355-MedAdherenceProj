@@ -12,7 +12,7 @@ public class PatientService {
     public List<Patient> getAllPatients() { return patientRepository.findAll(); }
     public Patient addPatient(Patient patient) { return patientRepository.save(patient); }
     public Patient getPatientById(Long id) { return patientRepository.findById(id).orElse(null);}
-    public Patient getPatientByName(String name) { return patientRepository.findByName(name);}
+    public List<Patient> getPatientByName(String name) { return patientRepository.findByName(name);}
     public Patient updatePatient(Long id, Patient updatedPatient) { return patientRepository.save(updatedPatient);}
     
     public boolean deletePatient(Long id) {

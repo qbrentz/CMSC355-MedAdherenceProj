@@ -1,0 +1,12 @@
+1743382994886:add-patient --name: "John Doe" --email:
+1743383003178:add-patient
+1743383021223:add-patient --name: "John Doe" --email:"honk@example.com"
+1743383039731:add-patient --name "John Doe" --email "honk@example.com"
+1743383127433:quit
+1743383365301:add-patient --name "John Doe" --email "jdoe@example.com"
+1743383584054:quit
+1743384822426:add-patient --name "Doug Funny" --email "dougfunny@example.com"
+1743384886414:list-patients
+1743385050659:add-prescription --name "advil" --dose 999 --inventory 999 --pharmacyID "CVS" --medicationID "Advil" --schedule "daily" --patient "Doug Funny"
+1743385077813:get-patient-by-name --name "Doug Funny"
+1743385183551:quit
