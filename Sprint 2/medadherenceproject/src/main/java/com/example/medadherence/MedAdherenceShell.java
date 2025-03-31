@@ -147,7 +147,8 @@ public class MedAdherenceShell {
         }
     }
 
-    @ShellMethod("List all prescriptions.")
+    @ShellMethod("List all prescriptions. Usage: list-prescriptions")
+    // This method lists all prescriptions in the system
     public String listPrescriptions() {
         List<Prescription> prescriptions = prescriptionRepository.findAll();
         if (prescriptions.isEmpty()) {
@@ -164,6 +165,7 @@ public class MedAdherenceShell {
     private MedicationLogRepository medicationLogRepository;
 
     @ShellMethod("Add a new medication log. Usage: add-medication-log --patientId <patientId> --timestamp <timestamp>")
+    // This method adds a new medication log for a patient
     public String addMedicationLog(Long patientId, String timestamp) {
         LocalDateTime parsedTimestamp = LocalDateTime.parse(timestamp);
         MedicationLog medicationLog = new MedicationLog();
