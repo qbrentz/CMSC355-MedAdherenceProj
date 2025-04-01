@@ -1,4 +1,3 @@
-
 package com.example.medadherence;
 
 import org.springframework.boot.SpringApplication;
@@ -11,4 +10,6 @@ public class MedAdherenceApplication {
     public static void main(String[] args) {
         SpringApplication.run(MedAdherenceApplication.class, args);
     }
+
+
 }

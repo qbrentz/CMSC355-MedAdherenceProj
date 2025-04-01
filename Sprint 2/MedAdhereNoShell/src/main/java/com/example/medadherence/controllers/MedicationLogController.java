@@ -48,4 +48,5 @@ public class MedicationLogController {
             return ResponseEntity.notFound().build();
         }
     }
+
 }
