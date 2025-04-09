@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/prescriptions")
+@RequestMapping("/api/prescriptions")
 public class PrescriptionController {
 
     @Autowired
@@ -28,7 +28,7 @@ public class PrescriptionController {
     }
 
     // Get a prescription by ID
-    @GetMapping("/{id}")
+    @GetMapping("/api/{id}")
     public ResponseEntity<Prescription> getPrescriptionById(@PathVariable Long id) {
         Prescription prescription = prescriptionService.getPrescriptionById(id);
         if (prescription != null) {
@@ -39,7 +39,7 @@ public class PrescriptionController {
     }
 
     // Update a prescription
-    @PutMapping("/{id}")
+    @PutMapping("/api/{id}")
     public ResponseEntity<Prescription> updatePrescription(@PathVariable Long id, @RequestBody Prescription updatedPrescription) {
         Prescription prescription = prescriptionService.updatePrescription(id, updatedPrescription);
         if (prescription != null) {
@@ -50,7 +50,7 @@ public class PrescriptionController {
     }
 
     // Delete a prescription
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/api/{id}")
     public ResponseEntity<String> deletePrescription(@PathVariable Long id) {
         boolean isDeleted = prescriptionService.deletePrescription(id);
         if (isDeleted) {

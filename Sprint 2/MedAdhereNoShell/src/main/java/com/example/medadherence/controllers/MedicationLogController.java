@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/medication_logs")
+@RequestMapping("/api/medication_logs")
 public class MedicationLogController {
 
     @Autowired
@@ -28,7 +28,7 @@ public class MedicationLogController {
     }
 
     // Get a medication log by ID
-    @GetMapping("/{id}")
+    @GetMapping("/api/{id}")
     public ResponseEntity<MedicationLog> getLogById(@PathVariable Long id) {
         MedicationLog log = medicationLogService.getLogById(id);
         if (log != null) {
@@ -39,7 +39,7 @@ public class MedicationLogController {
     }
 
     // Delete a medication log by ID
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/api/{id}")
     public ResponseEntity<String> deleteLog(@PathVariable Long id) {
         boolean isDeleted = medicationLogService.deleteLog(id);
         if (isDeleted) {

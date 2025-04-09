@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/notifications")
+@RequestMapping("/api/notifications")
 public class NotificationController {
 
     @Autowired
@@ -28,7 +28,7 @@ public class NotificationController {
     }
 
     // Get a notification by ID
-    @GetMapping("/{id}")
+    @GetMapping("/api/{id}")
     public ResponseEntity<Notification> getNotificationById(@PathVariable Long id) {
         Notification notification = notificationService.getNotificationById(id);
         if (notification != null) {
@@ -39,7 +39,7 @@ public class NotificationController {
     }
 
     // Delete a notification by ID
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/api/{id}")
     public ResponseEntity<String> deleteNotification(@PathVariable Long id) {
         String result = notificationService.deleteNotification(id);
         if (result.equals("Notification deleted successfully")) {

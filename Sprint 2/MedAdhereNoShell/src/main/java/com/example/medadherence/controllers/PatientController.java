@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/patient")
+@RequestMapping("/api/patient")
 public class PatientController {
 
     @Autowired
@@ -28,7 +28,7 @@ public class PatientController {
     }
 
     // Get a patient by ID
-    @GetMapping("/{id}")
+    @GetMapping("/api/{id}")
     public ResponseEntity<Patient> getPatientById(@PathVariable Long id) {
         Patient patient = patientService.getPatientById(id);
         if (patient != null) {
@@ -39,7 +39,7 @@ public class PatientController {
     }
 
     // Get a Patient by user name
-    @GetMapping("/{userName}")
+    @GetMapping("/api/{userName}")
     public ResponseEntity<Patient> getPatientByUserName(@PathVariable String userName) {
         Patient patient = patientService.getPatientByUserName(userName);
         if (patient != null) {
@@ -50,7 +50,7 @@ public class PatientController {
     }
 
     // Update a patient
-    @PutMapping("/{id}")
+    @PutMapping("/api/{id}")
     public ResponseEntity<Patient> updatePatient(@PathVariable Long id, @RequestBody Patient updatedPatient) {
         Patient patient = patientService.updatePatient(id, updatedPatient);
         if (patient != null) {
@@ -61,7 +61,7 @@ public class PatientController {
     }
 
     // Delete a patient
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/api/{id}")
     public ResponseEntity<String> deletePatient(@PathVariable Long id) {
         boolean isDeleted = patientService.deletePatient(id);
         if (isDeleted) {
