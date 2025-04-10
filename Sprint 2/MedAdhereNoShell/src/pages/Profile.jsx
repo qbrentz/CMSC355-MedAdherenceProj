@@ -5,27 +5,39 @@ import axios from "axios";
 
 export default function Profile() {
   const username = localStorage.getItem("username");
+  const [id, setId] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/patients/username/${username}`)
+    axios.get(`http://localhost:8080/api/patient/api/${username}`)
       .then(res => {
         const user = res.data[0];
         setEmail(user.email);
         setName(user.name);
+        setId(user.id);
       })
       .catch(err => console.error("Failed to load profile", err));
   }, [username]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.put(`http://localhost:8080/api/patients/${username}`, {
+    axios.put(`http://localhost:8080/api/patient/${id}`, {
       name,
       email,
     }).then(() => alert("Profile updated!"))
       .catch(() => alert("Update failed"));
   };
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    axios.delete(`http://localhost:8080/api/patient/api/${id} `)
+      .then(() => {
+        alert("Account deleted!");
+        localStorage.removeItem("username");
+        window.location.href = "/login";
+      })
+      .catch(() => alert("Delete failed"));
 
   return (
     <>
@@ -55,7 +67,13 @@ export default function Profile() {
             Save Changes
           </Button>
         </Form>
+        <div className="mt-3">
+          <Button variant="danger" onClick={handleDelete}>
+            Delete Account
+          </Button>
+        </div>
       </Container>
     </>
   );
+}
 }

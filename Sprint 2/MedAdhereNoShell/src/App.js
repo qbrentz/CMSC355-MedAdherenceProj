@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import History from "./pages/History";
 import Profile from "./pages/Profile";
+import { SignUp } from "./pages/SignUp";
 
 export default function App() {
   const isLoggedIn = !!localStorage.getItem("username");
@@ -14,6 +15,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Navigate to={isLoggedIn ? "/dashboard" : "/login"} />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
         <Route path="/history" element={isLoggedIn ? <History /> : <Navigate to="/login" />} />
         <Route path="/profile" element={isLoggedIn ? <Profile /> : <Navigate to="/login" />} />

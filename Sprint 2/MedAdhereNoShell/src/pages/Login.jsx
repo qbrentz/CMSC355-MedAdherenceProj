@@ -11,7 +11,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.get(`http://localhost:8080/api/patients/username/${username}`);
+      const res = await axios.get(`http://localhost:8080/api/patient/api/${username}`);
       if (res.data && res.data.length > 0) {
         localStorage.setItem("username", username);
         navigate("/dashboard");
@@ -42,9 +42,20 @@ export default function Login() {
             <Button variant="primary" type="submit" className="w-100">
               Login
             </Button>
+            
           </Form>
+          <div className="text-center mt-3">
+            <p>Don't have an account?</p>
+          <Button variant="secondary" onClick={() => navigate("/signup")}>
+              Sign Up
+            </Button>
+          </div>
         </Card.Body>
       </Card>
     </Container>
   );
+
+
 }
+
+

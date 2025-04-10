@@ -24,7 +24,7 @@
     "react-scripts": "^5.0.1",
     "webpack": "^5.99.5"
   },
-  "proxy": "http://localhost:8080",
+  
   "browserslist": {
     "production": [
       ">0.2%",

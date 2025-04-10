@@ -21,7 +21,7 @@ export default function Dashboard() {
         <h1>Dashboard</h1>
         <ul>
           {prescriptions.map(prescription => (
-            <li key={prescription.id}>{prescription.name} - {prescription.dosage}</li>
+            <li key={prescription.id}>{prescription.name} - {prescription.dose}</li>
           ))}
         </ul>
       </div>
