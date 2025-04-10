@@ -1,3 +1,2 @@
-./node_modules/
-./src/test/_
-./src/target/_
+node_modules/
+target/
