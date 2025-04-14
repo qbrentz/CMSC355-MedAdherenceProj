@@ -7,12 +7,13 @@ import java.time.LocalDateTime;
 public class MedicationLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    //public Prescription prescription;
+    private Long logId;
     private LocalDateTime timestamp;
 
     @ManyToOne
-    @JoinColumn(name = "prescription_id")
-    private Prescription prescription;
+    @JoinColumn(name = "medName")
+    public Prescription prescription;
 
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
@@ -26,8 +27,8 @@ public class MedicationLog {
     }
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() { return logId; }
+    public void setId(Long logId) { this.logId = logId; }
     public LocalDateTime getTimestamp() { return timestamp; }
     public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
     public void setPrescription(Prescription prescription) { this.prescription = prescription;}

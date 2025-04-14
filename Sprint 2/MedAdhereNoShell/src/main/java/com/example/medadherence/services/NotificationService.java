@@ -3,6 +3,7 @@ package com.example.medadherence.services;
 import com.example.medadherence.models.Notification;
 import com.example.medadherence.models.Prescription;
 import com.example.medadherence.repositories.NotificationRepository;
+import com.example.medadherence.repositories.PatientRepository;
 import com.example.medadherence.repositories.PrescriptionRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +21,15 @@ public class NotificationService {
 
     private final NotificationRepository notificationRepository;
     private final PrescriptionRepository prescriptionRepository;
+    private final PatientRepository patientRepository;
 
-    public NotificationService(NotificationRepository notificationRepository, PrescriptionRepository prescriptionRepository) {
+    public NotificationService(NotificationRepository notificationRepository, PrescriptionRepository prescriptionRepository, PatientRepository patientRepository) {
         this.notificationRepository = notificationRepository;
         this.prescriptionRepository = prescriptionRepository;
+        this.patientRepository = patientRepository;
     }
 
-    public void checkAndNotifyLowStock() {
+   /*  public void checkAndNotifyLowStock() {
         List<Prescription> prescriptions = prescriptionRepository.findAll();
         for (Prescription prescription : prescriptions) {
             if (prescription.getInventory() < 5) {  // Alert if less than 5 doses left
@@ -37,7 +40,7 @@ public class NotificationService {
                 notificationRepository.save(notification);
             }
         }
-    }
+    }*/
 
     // Get all notifications
     public List<Notification> getAllNotifications() {

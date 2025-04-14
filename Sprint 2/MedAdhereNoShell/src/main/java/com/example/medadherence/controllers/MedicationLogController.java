@@ -1,11 +1,13 @@
 package com.example.medadherence.controllers;
 
 import com.example.medadherence.models.MedicationLog;
+import com.example.medadherence.models.Prescription;
 import com.example.medadherence.services.MedicationLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -32,10 +34,14 @@ public class MedicationLogController {
 }
 
     // Add a new medication log
-    @PostMapping("/api/add")
-    public ResponseEntity<MedicationLog> addLog(@RequestBody MedicationLog log) {
+    @PostMapping("/api/add/{prescription}")
+    public ResponseEntity<MedicationLog> addLog(@RequestParam LocalDateTime timestamp,
+                                                @PathVariable Prescription prescription) {
+        MedicationLog log = new MedicationLog(timestamp, prescription);
         return ResponseEntity.ok(medicationLogService.addLog(log));
     }
+
+    
 
     // Get a medication log by ID
     @GetMapping("/api/{id}")

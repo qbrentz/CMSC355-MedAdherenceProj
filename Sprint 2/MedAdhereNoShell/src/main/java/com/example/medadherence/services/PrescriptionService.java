@@ -55,4 +55,8 @@ public class PrescriptionService {
         }
         return false;
     }
+
+    public Prescription findBymedName(String medName) {
+        return prescriptionRepository.findBymedName(medName);
+    }
 }

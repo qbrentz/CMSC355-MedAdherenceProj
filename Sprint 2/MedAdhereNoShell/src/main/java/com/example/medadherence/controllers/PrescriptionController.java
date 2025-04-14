@@ -35,11 +35,21 @@ public class PrescriptionController {
     }
 
     // Get a prescription by ID
-    @GetMapping("/api/getBy/{id}")
+     @GetMapping("/api/getBy/{id}")
     public ResponseEntity<Prescription> getPrescriptionById(@PathVariable Long id) {
         Prescription prescription = prescriptionService.getPrescriptionById(id);
         if (prescription != null) {
             return ResponseEntity.ok(prescription);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/api/getByName/{name}")
+    public ResponseEntity<Prescription> findBymedName(@PathVariable String name) {
+        Prescription prescriptions = prescriptionService.findBymedName(name);
+        if (prescriptions != null) {
+            return ResponseEntity.ok(prescriptions);
         } else {
             return ResponseEntity.notFound().build();
         }

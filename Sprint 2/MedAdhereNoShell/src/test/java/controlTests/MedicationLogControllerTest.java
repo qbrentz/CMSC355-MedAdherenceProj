@@ -1,6 +1,7 @@
 package controlTests;
 
 import com.example.medadherence.models.MedicationLog;
+import com.example.medadherence.models.Prescription;
 import com.example.medadherence.services.MedicationLogService;
 import com.example.medadherence.controllers.MedicationLogController;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,11 +44,13 @@ public class MedicationLogControllerTest {
     @Test
     void addLog_ReturnsCreatedLog() {
         // Arrange
-        MedicationLog log = new MedicationLog();
+        Prescription prescription = new Prescription();
+        LocalDateTime timeStamp = LocalDateTime.now();
+        MedicationLog log = new MedicationLog(timeStamp, prescription);
         when(medicationLogService.addLog(any(MedicationLog.class))).thenReturn(log);
 
         // Act
-        ResponseEntity<MedicationLog> response = medicationLogController.addLog(log);
+        ResponseEntity<MedicationLog> response = medicationLogController.addLog(timeStamp, prescription);
 
         // Assert
         assertNotNull(response.getBody());

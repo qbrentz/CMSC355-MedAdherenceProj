@@ -48,6 +48,6 @@ public class Prescription {
     public void setMedicationId(String medicationId) { this.medicationId = medicationId; }
     public String getSchedule() { return schedule; }
     public void setSchedule(String schedule) { this.schedule = schedule; }
-    public Patient getPatient() { return patient; }
-    public void setPatient(Patient patient) { this.patient = patient; }
+    //public Patient getPatient() { return patient; }
+    //public void setPatient(Patient patient) { this.patient = patient; }
 }

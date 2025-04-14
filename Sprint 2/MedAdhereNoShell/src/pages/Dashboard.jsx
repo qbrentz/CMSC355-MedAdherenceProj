@@ -6,8 +6,8 @@ import axios from "axios";
 
 export default function Dashboard() {
   const [prescriptions, setPrescriptions] = useState([]);
-  const [logPrescriptionId, setLogPrescriptionId] = useState('');
-  const [logTime, setLogTime] = useState('');
+  //const [logPrescriptionName, setLogPrescriptionName] = useState('');
+  //const [logTime, setLogTime] = Date();
   const [medName, setMedName] = useState("");
   const [dose, setDose] = useState("");
   const [inventory, setInventory] = useState("");
@@ -40,12 +40,23 @@ export default function Dashboard() {
     }
   };
 
-  const handleAddMedicationLog = async (e) => {
-    e.preventDefault();
+  const patientDetails = async (userID) => {
     try {
-      const response = await axios.post("/api/medication_logs/api/add", {
-        prescriptionId: logPrescriptionId, // ID of the prescription being logged
-        timeTaken: logTime, // Time the medication was taken
+      const response = await axios.get(`/api/patient/api/${userID}`);
+      console.log("Patient details:", response.data);
+      const patient = response.data[0];
+      return patient;
+    } catch (error) {
+      console.error("Error fetching patient details:", error);
+    }
+  };
+
+  const handleAddMedicationLog = async (prescription) => {
+    //e.preventDefault();
+    const logTime = new Date(); // Time the medication was taken
+    try {
+      const response = await axios.post(`/api/medication_logs/api/add/${prescription}`, {
+        timestamp: logTime, // Time the medication was taken
       });
       console.log("Medication log added:", response.data);
       resetLogForm();
@@ -62,6 +73,7 @@ export default function Dashboard() {
 
   const handleAddOrUpdatePrescription = async (e) => {
     e.preventDefault();
+    const userID = localStorage.getItem("userID");
     try {
       if (editPrescriptionId) {
         // Update existing prescription
@@ -75,21 +87,24 @@ export default function Dashboard() {
         console.log("Prescription updated:", response.data);
       } else {
         // Add new prescription
-        const response = await axios.post("/api/prescriptions/api/addNew", {
+        const response = await axios.post(`/api/prescriptions/api/addNew`, {
           medName,
           dose,
           inventory,
           pharmacyId,
           schedule,
+          
         });
         console.log("Prescription added:", response.data);
       }
-      resetForm();
-      fetchPrescriptions(localStorage.getItem("patientId"));
+      //resetForm();
+      fetchPrescriptions(localStorage.getItem("userID"));
     } catch (error) {
       console.error("Error adding/updating prescription:", error);
     }
   };
+
+
 
   const handleEditPrescription = (prescription) => {
     setEditPrescriptionId(prescription.id);
@@ -104,7 +119,7 @@ export default function Dashboard() {
     try {
       await axios.delete(`/api/prescriptions/${id}`);
       console.log("Prescription deleted:", id);
-      fetchPrescriptions(localStorage.getItem("patientId"));
+      fetchPrescriptions(localStorage.getItem("userID"));
     } catch (error) {
       console.error("Error deleting prescription:", error);
     }
@@ -152,6 +167,7 @@ export default function Dashboard() {
               <th>Medication Name</th>
               <th>Dose</th>
               <th>Inventory</th>
+              <th>Medication ID</th>
               <th>Pharmacy ID</th>
               <th>Schedule</th>
               <th>Actions</th>
@@ -163,23 +179,32 @@ export default function Dashboard() {
                 <td>{prescription.medName}</td>
                 <td>{prescription.dose}</td>
                 <td>{prescription.inventory}</td>
+                <td>{prescription.medicationId}</td>
                 <td>{prescription.pharmacyId}</td>
                 <td>{prescription.schedule}</td>
                 <td>
+                <Button
+                    variant="info"
+                    size="sm-6"
+                    onClick={() => handleAddMedicationLog(prescription)}
+                    >
+                      Log Medication
+                    </Button>
                   <Button
                     variant="warning"
-                    size="sm"
+                    size="sm-3"
                     onClick={() => handleEditPrescription(prescription)}
                   >
                     Edit
                   </Button>{" "}
                   <Button
                     variant="danger"
-                    size="sm"
+                    size="sm-3"
                     onClick={() => handleDeletePrescription(prescription.id)}
                   >
                     Delete
                   </Button>
+                  
                 </td>
               </tr>
             ))}
@@ -188,29 +213,7 @@ export default function Dashboard() {
       )}
     
 
-      <h2>Log Medication</h2>
-        <Form onSubmit={handleAddMedicationLog}>
-          <Form.Group className="mb-3">
-            <Form.Label>Prescription ID</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter prescription ID"
-              value={logPrescriptionId}
-              onChange={(e) => setLogPrescriptionId(e.target.value)}
-            />
-          </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Time Taken</Form.Label>
-          <Form.Control
-            type="datetime-local"
-            value={logTime}
-            onChange={(e) => setLogTime(e.target.value)}
-          />
-        </Form.Group>
-        <Button variant="primary" type="submit">
-          Log Medication
-        </Button>
-      </Form>
+      
 
   
         <h2>{editPrescriptionId ? "Edit Prescription" : "Add Prescription"}</h2>
