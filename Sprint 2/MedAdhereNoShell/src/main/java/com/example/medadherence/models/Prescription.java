@@ -13,7 +13,7 @@ public class Prescription {
     public String pharmacyId;
     public String medicationId;
     public String schedule;
-
+    
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { LocalDateTime } from "@js-joda/core";
 import { Container, Form, Button, Table } from "react-bootstrap";
 import Navbar from "../components/Navbar";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,7 +7,7 @@ import axios from "axios";
 
 export default function Dashboard() {
   const [prescriptions, setPrescriptions] = useState([]);
-  //const [logPrescriptionName, setLogPrescriptionName] = useState('');
+  //const [logPrescription, setLogPrescription] = useState('');
   //const [logTime, setLogTime] = Date();
   const [medName, setMedName] = useState("");
   const [dose, setDose] = useState("");
@@ -52,12 +53,10 @@ export default function Dashboard() {
   };
 
   const handleAddMedicationLog = async (prescription) => {
-    //e.preventDefault();
-    const logTime = new Date(); // Time the medication was taken
     try {
-      const response = await axios.post(`/api/medication_logs/api/add/${prescription}`, {
-        timestamp: logTime, // Time the medication was taken
-      });
+      const log_prescription = {prescriptionId: prescription.id, medName: prescription.medName, dose: prescription.dose, inventory: prescription.inventory, pharmacyId: prescription.pharmacyId, schedule: prescription.schedule, patient_id: prescription.patientId};
+      
+      const response = await axios.post(`/api/medication_logs/api/add/${logPrescription}`);
       console.log("Medication log added:", response.data);
       resetLogForm();
     } catch (error) {
@@ -93,7 +92,7 @@ export default function Dashboard() {
           inventory,
           pharmacyId,
           schedule,
-          
+          patient: patientDetails(userID),
         });
         console.log("Prescription added:", response.data);
       }
@@ -115,10 +114,11 @@ export default function Dashboard() {
     setSchedule(prescription.schedule);
   };
 
-  const handleDeletePrescription = async (id) => {
+  const handleDeletePrescription = async (prescription) => {
+    const pre_id = prescription.id;
     try {
-      await axios.delete(`/api/prescriptions/${id}`);
-      console.log("Prescription deleted:", id);
+      await axios.delete(`/api/prescriptions/api/removeBy/${pre_id}`);
+      console.log("Prescription deleted:", pre_id);
       fetchPrescriptions(localStorage.getItem("userID"));
     } catch (error) {
       console.error("Error deleting prescription:", error);
@@ -148,13 +148,7 @@ export default function Dashboard() {
       <Container>
         <h1>Dashboard</h1>
         <h2>Welcome to your Medication Adherence Tracker, {username}!</h2>
-        <nav>
-          <ul>
-            <li><Link to="/history">History</Link></li>
-            <li><Link to="/profile">Profile</Link></li>
-          </ul>
-        </nav>
-  
+
         <h2>Prescriptions</h2>
       {prescriptions.length === 0 ? (
         <div>
@@ -164,6 +158,7 @@ export default function Dashboard() {
         <Table striped bordered hover>
           <thead>
             <tr>
+              <th>Prescription ID</th>
               <th>Medication Name</th>
               <th>Dose</th>
               <th>Inventory</th>
@@ -176,6 +171,7 @@ export default function Dashboard() {
           <tbody>
             {prescriptions.map((prescription) => (
               <tr key={prescription.id}>
+                <td>{prescription.id}</td>
                 <td>{prescription.medName}</td>
                 <td>{prescription.dose}</td>
                 <td>{prescription.inventory}</td>
@@ -200,7 +196,7 @@ export default function Dashboard() {
                   <Button
                     variant="danger"
                     size="sm-3"
-                    onClick={() => handleDeletePrescription(prescription.id)}
+                    onClick={() => handleDeletePrescription(prescription)}
                   >
                     Delete
                   </Button>

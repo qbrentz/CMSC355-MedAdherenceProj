@@ -35,11 +35,17 @@ public class MedicationLogController {
 
     // Add a new medication log
     @PostMapping("/api/add/{prescription}")
-    public ResponseEntity<MedicationLog> addLog(@RequestParam LocalDateTime timestamp,
-                                                @PathVariable Prescription prescription) {
+    public ResponseEntity<MedicationLog> addLog(@PathVariable Prescription prescription) {
+        LocalDateTime timestamp = LocalDateTime.now();
         MedicationLog log = new MedicationLog(timestamp, prescription);
         return ResponseEntity.ok(medicationLogService.addLog(log));
     }
+
+    /*@PostMapping("/api/newLog/{log}")
+    public ResponseEntity<MedicationLog> addLog(@PathVariable MedicationLog log) {
+        //MedicationLog new_log = new MedicationLog(log.getTimestamp(), log.getPrescription());
+        return ResponseEntity.ok(medicationLogService.addLog(log));
+    }*/
 
     
 

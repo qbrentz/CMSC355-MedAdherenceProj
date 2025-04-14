@@ -1,6 +1,6 @@
 package modelTests;
 
-import com.example.medadherence.models.Patient;
+//import com.example.medadherence.models.Patient;
 import com.example.medadherence.models.Prescription;
 
 
@@ -26,19 +26,19 @@ public class PrescriptionTest {
 
     @Test
     void testMissingRequiredFields() {
-        Patient patient = new Patient("John Doe", "john@example.com", "jdoe69");
+        Long patientId = 123l;
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            new Prescription(null, 200F, 1, "123", "456", "daily", patient);
+            new Prescription(null, 200F, 1, "123", "456", "daily", patientId);
         });
         assertEquals("Medication name cannot be null", exception.getMessage());
     }
 
-   /*  @Test
+     @Test
     void testRelationshipWithPatient() {
-        Patient patient = new Patient("John Doe", "john@example.com", "jdoe69");
+        Long patient = 123l;
         Prescription prescription = new Prescription("Ibuprofen", 200F, 1, "123", "456", "daily", patient);
-        prescription.setPatient(patient);
-        assertEquals(patient, prescription.getPatient());
-    }*/
+        prescription.setPatientId(patient);
+        assertEquals(patient, prescription.getPatientId());
+    }
 
 }

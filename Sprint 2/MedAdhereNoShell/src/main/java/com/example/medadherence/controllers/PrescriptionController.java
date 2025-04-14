@@ -67,7 +67,7 @@ public class PrescriptionController {
     }
 
     // Delete a prescription
-    @DeleteMapping("/api/removeBy{id}")
+    @DeleteMapping("/api/removeBy/{id}")
     public ResponseEntity<String> deletePrescription(@PathVariable Long id) {
         boolean isDeleted = prescriptionService.deletePrescription(id);
         if (isDeleted) {

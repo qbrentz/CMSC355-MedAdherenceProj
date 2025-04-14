@@ -50,7 +50,7 @@ public class MedicationLogControllerTest {
         when(medicationLogService.addLog(any(MedicationLog.class))).thenReturn(log);
 
         // Act
-        ResponseEntity<MedicationLog> response = medicationLogController.addLog(timeStamp, prescription);
+        ResponseEntity<MedicationLog> response = medicationLogController.addLog(prescription);
 
         // Assert
         assertNotNull(response.getBody());
