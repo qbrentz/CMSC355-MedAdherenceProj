@@ -5,21 +5,28 @@ import axios from "axios";
 
 export default function Login() {
   const [username, setUsername] = useState("");
+  const [userID, setUserID] = useState(null);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.get(`http://localhost:8080/api/patient/api/${username}`);
-      if (res.data && res.data.length > 0) {
+      // Make API call to check if username exists and retrieve userID
+      const res = await axios.get(`/api/patient/api/usernameExists/${username}`);
+      console.log("API Response:", res.data); // Debugging
+  
+      // Check API response
+      if (res.data && res.data.userID) { // Assuming backend returns an object with userID
         localStorage.setItem("username", username);
-        navigate("/dashboard");
+        localStorage.setItem("userID", res.data.userID); // Store userID in localStorage
+        navigate("/dashboard"); // Navigate to Dashboard
       } else {
-        setError("User not found");
+        setError("Invalid username or user does not exist");
       }
     } catch (err) {
-      setError("Login failed");
+      console.error("API Error:", err); // Debugging
+      setError("Login failed. Please try again.");
     }
   };
 

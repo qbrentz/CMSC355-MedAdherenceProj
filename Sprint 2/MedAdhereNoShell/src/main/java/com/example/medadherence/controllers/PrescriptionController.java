@@ -15,20 +15,27 @@ public class PrescriptionController {
     @Autowired
     private PrescriptionService prescriptionService;
 
-    // Get all prescriptions
-    @GetMapping
+    //Get all prescriptions
+    @GetMapping("/api/allScripts")
     public List<Prescription> getAllPrescriptions() {
         return prescriptionService.getAllPrescriptions();
     }
 
     // Add a new prescription
-    @PostMapping
+    @PostMapping("/api/addNew")
     public ResponseEntity<Prescription> addPrescription(@RequestBody Prescription prescription) {
         return ResponseEntity.ok(prescriptionService.addPrescription(prescription));
     }
 
+    @GetMapping("/api/getByUserID/{userID}")
+    public ResponseEntity<List<Prescription>> getPrescriptionsByPatient(@PathVariable Long userID) {
+        List<Prescription> prescriptions = prescriptionService.findByPatientId(userID);
+        return ResponseEntity.ok(prescriptions);
+        
+    }
+
     // Get a prescription by ID
-    @GetMapping("/api/{id}")
+    @GetMapping("/api/getBy/{id}")
     public ResponseEntity<Prescription> getPrescriptionById(@PathVariable Long id) {
         Prescription prescription = prescriptionService.getPrescriptionById(id);
         if (prescription != null) {
@@ -39,7 +46,7 @@ public class PrescriptionController {
     }
 
     // Update a prescription
-    @PutMapping("/api/{id}")
+    @PutMapping("/api/updateBy/{id}")
     public ResponseEntity<Prescription> updatePrescription(@PathVariable Long id, @RequestBody Prescription updatedPrescription) {
         Prescription prescription = prescriptionService.updatePrescription(id, updatedPrescription);
         if (prescription != null) {
@@ -50,7 +57,7 @@ public class PrescriptionController {
     }
 
     // Delete a prescription
-    @DeleteMapping("/api/{id}")
+    @DeleteMapping("/api/removeBy{id}")
     public ResponseEntity<String> deletePrescription(@PathVariable Long id) {
         boolean isDeleted = prescriptionService.deletePrescription(id);
         if (isDeleted) {

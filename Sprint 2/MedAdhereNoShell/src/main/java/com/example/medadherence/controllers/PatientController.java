@@ -3,10 +3,13 @@ package com.example.medadherence.controllers;
 import com.example.medadherence.models.Patient;
 import com.example.medadherence.services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/patient")
@@ -39,13 +42,23 @@ public class PatientController {
     }
 
     // Get a Patient by user name
-    @GetMapping("/api/{userName}")
+    @GetMapping("/api/username/{userName}")
     public ResponseEntity<Patient> getPatientByUserName(@PathVariable String userName) {
         Patient patient = patientService.getPatientByUserName(userName);
-        if (patient != null) {
+        if (patient.userName != null) {
             return ResponseEntity.ok(patientService.getPatientByUserName(userName));
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/api/usernameExists/{username}")
+    public ResponseEntity<Map<String, Long>> checkUsernameExists(@PathVariable String username) {
+        Patient patient = patientService.getPatientByUserName(username);
+        if (patient != null) {
+            return ResponseEntity.ok(Map.of("userID", patient.id));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of());
         }
     }
 

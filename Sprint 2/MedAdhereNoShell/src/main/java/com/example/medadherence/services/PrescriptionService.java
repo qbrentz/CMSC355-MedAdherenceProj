@@ -30,6 +30,14 @@ public class PrescriptionService {
         return prescription.orElse(null);
     }
 
+    public List<Prescription> findByPatientId(Long patientId) {
+        return prescriptionRepository.findByPatientId(patientId);
+    }
+
+    public List<Prescription> findByPatientUserName(String userName) {
+        return prescriptionRepository.findByPatientUserName(userName);
+    }
+
     // Update a prescription
     public Prescription updatePrescription(Long id, Prescription updatedPrescription) {
         if (prescriptionRepository.existsById(id)) {

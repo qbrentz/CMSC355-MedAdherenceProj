@@ -15,7 +15,9 @@ public class PatientService {
     public List<Patient> getPatientByName(String name) { return patientRepository.findByName(name);}
     public Patient getPatientByUserName(String userName) { return patientRepository.findByUserName(userName);}
     public Patient updatePatient(Long id, Patient updatedPatient) { return patientRepository.save(updatedPatient);}
-    
+    public boolean existsByUserName(String userName) {
+        return patientRepository.existsByUserName(userName);
+    }
     public boolean deletePatient(Long id) {
         if (patientRepository.existsById(id)) {
             patientRepository.deleteById(id);

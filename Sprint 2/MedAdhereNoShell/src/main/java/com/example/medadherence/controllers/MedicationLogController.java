@@ -21,8 +21,18 @@ public class MedicationLogController {
         return medicationLogService.getAllLogs();
     }
 
+    @GetMapping("/api/getByPatient/{patientId}")
+    public ResponseEntity<List<MedicationLog>> getLogsByPatientId(@PathVariable Long patientId) {
+    List<MedicationLog> logs = medicationLogService.getLogsByPatientId(patientId);
+    if (!logs.isEmpty()) {
+        return ResponseEntity.ok(logs);
+    } else {
+        return ResponseEntity.notFound().build();
+    }
+}
+
     // Add a new medication log
-    @PostMapping
+    @PostMapping("/api/add")
     public ResponseEntity<MedicationLog> addLog(@RequestBody MedicationLog log) {
         return ResponseEntity.ok(medicationLogService.addLog(log));
     }

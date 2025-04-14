@@ -10,7 +10,7 @@ export default function Profile() {
   const [name, setName] = useState("");
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/patient/api/${username}`)
+    axios.get(`/api/patient/api/username/${username}`)
       .then(res => {
         const user = res.data[0];
         setEmail(user.email);
@@ -22,7 +22,7 @@ export default function Profile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.put(`http://localhost:8080/api/patient/${id}`, {
+    axios.put(`/api/patient/${id}`, {
       name,
       email,
     }).then(() => alert("Profile updated!"))
@@ -31,7 +31,7 @@ export default function Profile() {
 
   const handleDelete = (e) => {
     e.preventDefault();
-    axios.delete(`http://localhost:8080/api/patient/api/${id} `)
+    axios.delete(`/api/patient/api/${id} `)
       .then(() => {
         alert("Account deleted!");
         localStorage.removeItem("username");

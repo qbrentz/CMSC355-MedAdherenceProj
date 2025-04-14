@@ -15,7 +15,7 @@ export function SignUp() {
       e.preventDefault();
       try {
         const newPatient = { name: name, userName: username, email: email };
-        const res = await axios.post("http://localhost:8080/api/patient", newPatient);
+        const res = await axios.post("/api/patient", newPatient);
         if (res.status === 200 || res.status === 201) {
           setSuccess("Account created successfully! Redirecting to login...");
           setTimeout(() => navigate("/login"), 2000); // Redirect to login after 2 seconds

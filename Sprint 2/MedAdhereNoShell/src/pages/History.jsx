@@ -5,11 +5,21 @@ import axios from "axios";
 
 export default function History() {
   const username = localStorage.getItem("username");
+  const userID = localStorage.getItem("userID");
+  const [prescriptions, setPrescriptions] = useState([]);
+  const [medicationLogs, setMedicationLogs] = useState([]);
+  const [logPrescriptionId, setLogPrescriptionId] = useState("");
+  const [logTime, setLogTime] = useState("");
+  const [medName, setMedName] = useState("");
+  const [dose, setDose] = useState("");
+  const [inventory, setInventory] = useState("");
+  const [pharmacyId, setPharmacyId] = useState("");
+  const [schedule, setSchedule] = useState("");
   const [logs, setLogs] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/medication_logs/`)
+      .get(`/api/medication_logs/`)
       .then((res) => setLogs(res.data))
       .catch((err) => console.error("Failed to load logs", err));
   }, [username]);

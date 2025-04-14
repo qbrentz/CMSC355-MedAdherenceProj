@@ -59,6 +59,10 @@ public class MedicationLogService {
         return log.orElse(null);
     }
 
+    public List<MedicationLog> getLogsByPatientId(Long patientId) {
+        return medicationLogRepository.findByPatientId(patientId);
+    }
+
     // Delete a medication log by ID
     public boolean deleteLog(Long id) {
         if (medicationLogRepository.existsById(id)) {

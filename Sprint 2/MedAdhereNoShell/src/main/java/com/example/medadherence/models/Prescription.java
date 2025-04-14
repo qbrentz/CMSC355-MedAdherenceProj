@@ -6,13 +6,13 @@ import jakarta.persistence.*;
 public class Prescription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String medName;
-    private float dose;
-    private int inventory;
-    private String pharmacyId;
-    private String medicationId;
-    private String schedule;
+    public Long id;
+    public String medName;
+    public float dose;
+    public int inventory;
+    public String pharmacyId;
+    public String medicationId;
+    public String schedule;
 
     @ManyToOne
     @JoinColumn(name = "patient_id")

@@ -10,4 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MedicationLogRepository extends JpaRepository<MedicationLog, Long> {
     List<MedicationLog> findByPatientAndTimestampBetween(Patient patient, LocalDateTime start, LocalDateTime end);
+    List<MedicationLog> findByPatientId(Long patientId);
 }
