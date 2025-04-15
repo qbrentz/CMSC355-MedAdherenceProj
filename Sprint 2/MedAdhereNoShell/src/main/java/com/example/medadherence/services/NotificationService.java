@@ -29,7 +29,7 @@ public class NotificationService {
         this.patientRepository = patientRepository;
     }
 
-   /*  public void checkAndNotifyLowStock() {
+    public void checkAndNotifyLowStock() {
         List<Prescription> prescriptions = prescriptionRepository.findAll();
         for (Prescription prescription : prescriptions) {
             if (prescription.getInventory() < 5) {  // Alert if less than 5 doses left
@@ -40,7 +40,7 @@ public class NotificationService {
                 notificationRepository.save(notification);
             }
         }
-    }*/
+    }
 
     // Get all notifications
     public List<Notification> getAllNotifications() {
