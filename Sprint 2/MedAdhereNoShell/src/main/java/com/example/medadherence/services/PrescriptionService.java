@@ -40,11 +40,16 @@ public class PrescriptionService {
 
     // Update a prescription
     public Prescription updatePrescription(Long id, Prescription updatedPrescription) {
-        if (prescriptionRepository.existsById(id)) {
-            updatedPrescription.setId(id); // Ensure the ID remains the same
-            return prescriptionRepository.save(updatedPrescription);
-        }
-        return null;
+        return prescriptionRepository.findById(id).map(existingPrescription -> {
+            existingPrescription.setMedName(updatedPrescription.getMedName());
+            existingPrescription.setDose(updatedPrescription.getDose());
+            existingPrescription.setInventory(updatedPrescription.getInventory());
+            existingPrescription.setPharmacyId(updatedPrescription.getPharmacyId());
+            existingPrescription.setMedicationId(updatedPrescription.getMedicationId());
+            existingPrescription.setSchedule(updatedPrescription.getSchedule());
+            existingPrescription.setPatient(updatedPrescription.getPatient()); // Set the patient
+            return prescriptionRepository.save(existingPrescription);
+        }).orElse(null);
     }
 
     // Delete a prescription

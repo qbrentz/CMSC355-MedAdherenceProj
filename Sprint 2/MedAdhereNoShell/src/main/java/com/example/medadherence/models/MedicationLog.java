@@ -2,6 +2,8 @@ package com.example.medadherence.models;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity
 public class MedicationLog {
@@ -17,6 +19,7 @@ public class MedicationLog {
 
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
+    @JsonBackReference
     private Patient patient;
 
     public MedicationLog() {}

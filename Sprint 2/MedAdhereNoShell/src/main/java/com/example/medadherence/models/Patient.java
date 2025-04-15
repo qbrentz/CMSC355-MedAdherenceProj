@@ -1,6 +1,7 @@
 package com.example.medadherence.models;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,9 +17,11 @@ public class Patient {
     public String userName;
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Prescription> prescriptions;
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<MedicationLog> medicationLogs;
 
     public Patient(){}

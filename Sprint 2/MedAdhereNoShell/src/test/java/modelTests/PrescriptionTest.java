@@ -1,5 +1,6 @@
 package modelTests;
 
+import com.example.medadherence.models.Patient;
 //import com.example.medadherence.models.Patient;
 import com.example.medadherence.models.Prescription;
 
@@ -26,7 +27,7 @@ public class PrescriptionTest {
 
     @Test
     void testMissingRequiredFields() {
-        Long patientId = 123l;
+        Patient patientId = new Patient();
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             new Prescription(null, 200F, 1, "123", "456", "daily", patientId);
         });
@@ -35,10 +36,10 @@ public class PrescriptionTest {
 
      @Test
     void testRelationshipWithPatient() {
-        Long patient = 123l;
+        Patient patient = new Patient("J Doe","jdoe@example.com", "jdoe");
         Prescription prescription = new Prescription("Ibuprofen", 200F, 1, "123", "456", "daily", patient);
-        prescription.setPatientId(patient);
-        assertEquals(patient, prescription.getPatientId());
+        prescription.setPatient(patient);
+        assertEquals(patient, prescription.getPatient());
     }
 
 }

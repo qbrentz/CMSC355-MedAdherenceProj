@@ -13,6 +13,7 @@ export default function Dashboard() {
   const [dose, setDose] = useState("");
   const [inventory, setInventory] = useState("");
   const [pharmacyId, setPharmacyId] = useState("");
+  const [medicationId, setMedicationId] = useState("");
   const [schedule, setSchedule] = useState("");
   const username = localStorage.getItem("username");
   const [editPrescriptionId, setEditPrescriptionId] = useState(null); // For editing prescriptions
@@ -53,10 +54,12 @@ export default function Dashboard() {
   };
 
   const handleAddMedicationLog = async (prescription) => {
+    console.log(prescription);
+    const userID = localStorage.getItem("userID");
+    const patient = await patientDetails(userID);
     try {
-      const log_prescription = {prescriptionId: prescription.id, medName: prescription.medName, dose: prescription.dose, inventory: prescription.inventory, pharmacyId: prescription.pharmacyId, schedule: prescription.schedule, patient_id: prescription.patientId};
-      
-      const response = await axios.post(`/api/medication_logs/api/add/${logPrescription}`);
+      const log_prescription = {prescriptionId: prescription.id, medName: prescription.medName, dose: prescription.dose, inventory: prescription.inventory, pharmacyId: prescription.pharmacyId, schedule: prescription.schedule, patient: patient};
+      const response = await axios.post(`/api/medication_logs/api/add/${log_prescription}`);
       console.log("Medication log added:", response.data);
       resetLogForm();
     } catch (error) {
@@ -72,7 +75,7 @@ export default function Dashboard() {
 
   const handleAddOrUpdatePrescription = async (e) => {
     e.preventDefault();
-    const userID = localStorage.getItem("userID");
+    const userID = localStorage.getItem("userID"); // Retrieve the patient ID from localStorage
     try {
       if (editPrescriptionId) {
         // Update existing prescription
@@ -81,7 +84,9 @@ export default function Dashboard() {
           dose,
           inventory,
           pharmacyId,
+          medicationId,
           schedule,
+          patient: { id: userID }, // Include the patient ID in the payload
         });
         console.log("Prescription updated:", response.data);
       } else {
@@ -91,13 +96,14 @@ export default function Dashboard() {
           dose,
           inventory,
           pharmacyId,
+          medicationId,
           schedule,
-          patient: patientDetails(userID),
+          patient: { id: userID }, // Include the patient ID in the payload
         });
         console.log("Prescription added:", response.data);
       }
-      //resetForm();
-      fetchPrescriptions(localStorage.getItem("userID"));
+      resetForm();
+      fetchPrescriptions(userID); // Refresh the prescriptions list
     } catch (error) {
       console.error("Error adding/updating prescription:", error);
     }
@@ -165,6 +171,7 @@ export default function Dashboard() {
               <th>Medication ID</th>
               <th>Pharmacy ID</th>
               <th>Schedule</th>
+              
               <th>Actions</th>
             </tr>
           </thead>
@@ -192,7 +199,7 @@ export default function Dashboard() {
                     onClick={() => handleEditPrescription(prescription)}
                   >
                     Edit
-                  </Button>{" "}
+                  </Button>
                   <Button
                     variant="danger"
                     size="sm-3"
