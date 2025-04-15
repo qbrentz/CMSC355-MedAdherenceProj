@@ -36,5 +36,7 @@ public class MedicationLog {
     public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
     public void setPrescription(Prescription prescription) { this.prescription = prescription;}
     public Prescription getPrescription() {return prescription; }
+    public Patient getPatient() { return patient; }
+    public void setPatient(Patient patient) { this.patient = patient; }
 
 }

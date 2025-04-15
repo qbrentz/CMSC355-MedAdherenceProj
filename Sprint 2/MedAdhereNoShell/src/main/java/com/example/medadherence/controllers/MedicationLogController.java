@@ -1,7 +1,10 @@
 package com.example.medadherence.controllers;
 
 import com.example.medadherence.models.MedicationLog;
+import com.example.medadherence.models.Patient;
 import com.example.medadherence.models.Prescription;
+import com.example.medadherence.repositories.PatientRepository;
+import com.example.medadherence.repositories.PrescriptionRepository;
 import com.example.medadherence.services.MedicationLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+//import java.util.Map;
 
 @RestController
 @RequestMapping("/api/medication_logs")
@@ -16,6 +20,10 @@ public class MedicationLogController {
 
     @Autowired
     private MedicationLogService medicationLogService;
+    @Autowired
+    private PatientRepository PatientRepository;
+    @Autowired
+    private PrescriptionRepository PrescriptionRepository;
 
     // Get all medication logs
     @GetMapping
@@ -34,12 +42,30 @@ public class MedicationLogController {
 }
 
     // Add a new medication log
-    @PostMapping("/api/add/{prescription}")
-    public ResponseEntity<MedicationLog> addLog(@PathVariable Prescription prescription) {
-        LocalDateTime timestamp = LocalDateTime.now();
-        MedicationLog log = new MedicationLog(timestamp, prescription);
-        return ResponseEntity.ok(medicationLogService.addLog(log));
-    }
+    @PostMapping("/api/add/{patientId}/{prescriptionId}")
+    public ResponseEntity<MedicationLog> addMedicationLog(@PathVariable Long patientId, @PathVariable Long prescriptionId) {
+        // Extract patient and prescription IDs from the payload
+        try {
+            // Find the patient and prescription
+            Patient patient = PatientRepository.findById(patientId).orElse(null);
+            Prescription prescription = PrescriptionRepository.findById(prescriptionId).orElse(null);
+
+            if (patient == null || prescription == null) {
+                return ResponseEntity.badRequest().build();
+            }
+
+            // Create a new MedicationLog object
+            MedicationLog log = new MedicationLog(LocalDateTime.now(), prescription);
+            log.setPatient(patient);
+
+            // Save the log
+            MedicationLog savedLog = medicationLogService.addMedicationLog(log);
+            return ResponseEntity.ok(savedLog);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+}
+    
 
     /*@PostMapping("/api/newLog/{log}")
     public ResponseEntity<MedicationLog> addLog(@PathVariable MedicationLog log) {

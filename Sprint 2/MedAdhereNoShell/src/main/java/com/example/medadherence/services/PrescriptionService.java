@@ -40,17 +40,17 @@ public class PrescriptionService {
 
     // Update a prescription
     public Prescription updatePrescription(Long id, Prescription updatedPrescription) {
-        return prescriptionRepository.findById(id).map(existingPrescription -> {
-            existingPrescription.setMedName(updatedPrescription.getMedName());
-            existingPrescription.setDose(updatedPrescription.getDose());
-            existingPrescription.setInventory(updatedPrescription.getInventory());
-            existingPrescription.setPharmacyId(updatedPrescription.getPharmacyId());
-            existingPrescription.setMedicationId(updatedPrescription.getMedicationId());
-            existingPrescription.setSchedule(updatedPrescription.getSchedule());
-            existingPrescription.setPatient(updatedPrescription.getPatient()); // Set the patient
-            return prescriptionRepository.save(existingPrescription);
-        }).orElse(null);
-    }
+            return prescriptionRepository.findById(id).map(existingPrescription -> {
+                existingPrescription.setMedName(updatedPrescription.getMedName());
+                existingPrescription.setDose(updatedPrescription.getDose());
+                existingPrescription.setInventory(updatedPrescription.getInventory());
+                existingPrescription.setPharmacyId(updatedPrescription.getPharmacyId());
+                existingPrescription.setMedicationId(updatedPrescription.getMedicationId());
+                existingPrescription.setSchedule(updatedPrescription.getSchedule());
+                existingPrescription.setPatient(updatedPrescription.getPatient()); // Set the patient
+                return prescriptionRepository.save(existingPrescription);
+            }).orElse(null);
+        }
 
     // Delete a prescription
     public boolean deletePrescription(Long id) {

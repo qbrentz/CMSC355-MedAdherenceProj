@@ -7,8 +7,8 @@ import axios from "axios";
 
 export default function Dashboard() {
   const [prescriptions, setPrescriptions] = useState([]);
-  //const [logPrescription, setLogPrescription] = useState('');
-  //const [logTime, setLogTime] = Date();
+  const [logPrescription, setLogPrescription] = useState('');
+  const [logUser, setLogUser] = useState('');
   const [medName, setMedName] = useState("");
   const [dose, setDose] = useState("");
   const [inventory, setInventory] = useState("");
@@ -54,14 +54,14 @@ export default function Dashboard() {
   };
 
   const handleAddMedicationLog = async (prescription) => {
-    console.log(prescription);
-    const userID = localStorage.getItem("userID");
-    const patient = await patientDetails(userID);
+    //setLogPrescription(prescription);
+    //setLogUser(localStorage.getItem("userID"));
+    console.log(prescription.id);
+    const userID = Number(localStorage.getItem("userID")); // Retrieve the patient ID from localStorage
+    console.log(userID);
     try {
-      const log_prescription = {prescriptionId: prescription.id, medName: prescription.medName, dose: prescription.dose, inventory: prescription.inventory, pharmacyId: prescription.pharmacyId, schedule: prescription.schedule, patient: patient};
-      const response = await axios.post(`/api/medication_logs/api/add/${log_prescription}`);
+      const response = await axios.post(`/api/medication_logs/api/add/${userID}/${prescription.id}`);
       console.log("Medication log added:", response.data);
-      resetLogForm();
     } catch (error) {
       console.error("Error adding medication log:", error);
     }

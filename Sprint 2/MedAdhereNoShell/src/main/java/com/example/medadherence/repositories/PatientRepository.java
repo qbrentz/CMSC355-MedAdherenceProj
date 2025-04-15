@@ -15,5 +15,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     boolean existsByUserName(String userName);
 
     Patient findByUserName(String userName);
+
+    
     
 }

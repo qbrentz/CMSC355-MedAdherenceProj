@@ -53,6 +53,14 @@ public class MedicationLogService {
         return medicationLogRepository.save(log);
     }
 
+    public MedicationLog addMedicationLog(MedicationLog log) {
+        if (log.getPatient() == null || log.getPrescription() == null) {
+            throw new IllegalArgumentException("Patient and Prescription must not be null");
+        }
+        log.setTimestamp(LocalDateTime.now()); // Set the current timestamp
+        return medicationLogRepository.save(log);
+    }
+
     // Get a medication log by ID
     public MedicationLog getLogById(Long id) {
         Optional<MedicationLog> log = medicationLogRepository.findById(id);
