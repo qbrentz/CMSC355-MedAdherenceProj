@@ -10,7 +10,7 @@ export default function History() {
 
   useEffect(() => {
     axios
-      .get(`/api/medication_logs/`)
+      .get(`/api/medication_logs/api/getByPatient/${userID}`)
       .then((res) => setLogs(res.data))
       .catch((err) => console.error("Failed to load logs", err));
   }, [username]);

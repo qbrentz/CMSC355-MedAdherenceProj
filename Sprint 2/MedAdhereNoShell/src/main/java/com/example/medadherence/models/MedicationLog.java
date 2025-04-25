@@ -9,24 +9,27 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class MedicationLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //public Prescription prescription;
+    
     private Long logId;
     private LocalDateTime timestamp;
+    public Long prescriptionID;
+    public Long patientID;
 
     @ManyToOne
-    @JoinColumn(name = "medName")
+    @JoinColumn(name = "med_name")
     public Prescription prescription;
 
     @ManyToOne
-    @JoinColumn(name = "patient_id", nullable = false)
+    @JoinColumn(name = "patient_id")
     @JsonBackReference
-    private Patient patient;
+    public Patient patient;
 
     public MedicationLog() {}
 
-    public MedicationLog(LocalDateTime timestamp, Prescription prescription) {
+    public MedicationLog(LocalDateTime timestamp, Long prescriptionID, Long patientID) {
         this.timestamp = timestamp;
-        this.prescription = prescription;
+        this.prescriptionID = prescriptionID;
+        this.patientID = patientID;
     }
 
     // Getters and Setters
@@ -34,9 +37,13 @@ public class MedicationLog {
     public void setId(Long logId) { this.logId = logId; }
     public LocalDateTime getTimestamp() { return timestamp; }
     public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
-    public void setPrescription(Prescription prescription) { this.prescription = prescription;}
-    public Prescription getPrescription() {return prescription; }
+    public void setPrescriptionID(Long prescriptionID) { this.prescriptionID = prescriptionID;}
+    public Long getPrescriptionID() {return prescriptionID; }
+    public Long getPatientID() { return patientID; }
+    public void setPatientID(Long patientID) { this.patientID = patientID; }
+    public void setPatient(Patient patient) {this.patient = patient; }
+    public void setPrescription(Prescription prescription) { this.prescription = prescription; }
     public Patient getPatient() { return patient; }
-    public void setPatient(Patient patient) { this.patient = patient; }
+    public Prescription getPrescription() { return prescription; }
 
 }

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ public class PatientController {
     // Add a new patient
     @PostMapping
     public ResponseEntity<Patient> addPatient(@RequestBody Patient patient) {
+        patient.setCreateTime(LocalDateTime.now());
         return ResponseEntity.ok(patientService.addPatient(patient));
     }
 

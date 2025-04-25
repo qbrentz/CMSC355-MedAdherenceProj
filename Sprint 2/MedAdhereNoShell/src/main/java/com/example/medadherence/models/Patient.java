@@ -21,7 +21,7 @@ public class Patient {
     private List<Prescription> prescriptions;
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    //@JsonManagedReference
     private List<MedicationLog> medicationLogs;
 
     public Patient(){}
@@ -43,6 +43,7 @@ public class Patient {
     }
     
     public LocalDateTime getCreateTime() { return createTime;}
+    public void setCreateTime(LocalDateTime time) { this.createTime = time; }
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getName() { return name; }

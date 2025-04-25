@@ -5,17 +5,22 @@ import com.example.medadherence.models.Patient;
 import com.example.medadherence.models.Prescription;
 import com.example.medadherence.repositories.PatientRepository;
 import com.example.medadherence.repositories.PrescriptionRepository;
+import com.example.medadherence.services.PatientService;
+import com.example.medadherence.services.PrescriptionService;
 import com.example.medadherence.services.MedicationLogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 //import java.util.Map;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/medication_logs")
+@RequestMapping(value = "/api/medication_logs")
 public class MedicationLogController {
 
     @Autowired
@@ -24,6 +29,11 @@ public class MedicationLogController {
     private PatientRepository PatientRepository;
     @Autowired
     private PrescriptionRepository PrescriptionRepository;
+    
+    @Autowired
+    private PrescriptionService prescriptionService;
+    @Autowired
+    private PatientService PatientService;
 
     // Get all medication logs
     @GetMapping
@@ -42,28 +52,15 @@ public class MedicationLogController {
 }
 
     // Add a new medication log
-    @PostMapping("/api/add/{patientId}/{prescriptionId}")
-    public ResponseEntity<MedicationLog> addMedicationLog(@PathVariable Long patientId, @PathVariable Long prescriptionId) {
-        // Extract patient and prescription IDs from the payload
-        try {
-            // Find the patient and prescription
-            Patient patient = PatientRepository.findById(patientId).orElse(null);
-            Prescription prescription = PrescriptionRepository.findById(prescriptionId).orElse(null);
-
-            if (patient == null || prescription == null) {
-                return ResponseEntity.badRequest().build();
-            }
-
-            // Create a new MedicationLog object
-            MedicationLog log = new MedicationLog(LocalDateTime.now(), prescription);
-            log.setPatient(patient);
-
-            // Save the log
-            MedicationLog savedLog = medicationLogService.addMedicationLog(log);
-            return ResponseEntity.ok(savedLog);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+    @PostMapping(value = "/api/add")
+    public ResponseEntity<MedicationLog> addMedicationLog(@RequestBody MedicationLog newLog) {
+        Patient patient = PatientService.getPatientById(newLog.patientID);
+        Prescription prescription = prescriptionService.getPrescriptionById(newLog.prescriptionID);
+        newLog.setTimestamp(LocalDateTime.now());
+        newLog.setPatient(patient);
+        newLog.setPrescription(prescription);
+        
+        return ResponseEntity.ok(medicationLogService.addLog(newLog));
 }
     
 
