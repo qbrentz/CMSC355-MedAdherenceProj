@@ -7,8 +7,7 @@ import axios from "axios";
 
 export default function Dashboard() {
   const [prescriptions, setPrescriptions] = useState([]);
-  //const [logPrescription, setLogPrescription] = useState('');
-  //const [logUser, setLogUser] = useState('');
+  const [notifications, setNotifications] = useState([]);
   const [medName, setMedName] = useState("");
   const [dose, setDose] = useState("");
   const [inventory, setInventory] = useState("");
@@ -26,6 +25,7 @@ export default function Dashboard() {
       navigate("/login");
     }
     fetchPrescriptions(userID);
+    fetchNotifications(userID);
   }, [navigate]);
 
   const fetchPrescriptions = async (userID) => {
@@ -42,25 +42,19 @@ export default function Dashboard() {
     }
   };
 
-  const patientDetails = async (userID) => {
-    try {
-      const response = await axios.get(`/api/patient/api/${userID}`);
-      console.log("Patient details:", response.data);
-      const patient = response.data[0];
-      return patient;
+  const fetchNotifications = async (userID) => {
+    try{
+      const result = await axios.get(`/api/notifications/api/getByPatient/${userID}`)
+      setNotifications(result);
     } catch (error) {
-      console.error("Error fetching patient details:", error);
+      console.error("Error fetching Notifications:", error);
     }
-  };
+
+  }
 
   const handleAddMedicationLog = async (prescription) => {
-    
-    //const patientID = Number(localStorage.getItem("userID")); // Retrieve the patient ID from localStorage
-    //const logScrip = await axios.get(`/api/prescriptions/api/getBy/${prescription.id}`);
-    //console.log(logScrip);
-    
+
     const patientID = Number(localStorage.getItem("userID"));
-    
     const prescriptionID = Number(prescription.id);
     const newLog = {timestamp: LocalDateTime.now(), prescriptionID: prescriptionID, patientID: patientID,};
     
@@ -68,6 +62,7 @@ export default function Dashboard() {
     try {
       const response = await axios.post('/api/medication_logs/api/add', newLog);
       console.log("Medication log added:", response.data);
+      fetchPrescriptions(patientID);
     } catch (error) {
       console.error("Error adding medication log:", error);
     }
@@ -157,6 +152,25 @@ export default function Dashboard() {
       <Container>
         <h1>Dashboard</h1>
         <h2>Welcome to your Medication Adherence Tracker, {username}!</h2>
+
+        <h2>Notifications</h2>
+          <Table>
+          <thead>
+            <tr>
+              <th>Message</th>
+              <th>TimeStamp</th>
+            </tr>
+          </thead>
+          <tbody>
+            {notifications.map((notification) => (
+              <tr key={notification.id}>
+                <td>{notification.message}</td>
+                <td>{notification.timestamp}</td>
+              </tr>
+            ))}
+          </tbody>
+          </Table>
+        
 
         <h2>Prescriptions</h2>
       {prescriptions.length === 0 ? (

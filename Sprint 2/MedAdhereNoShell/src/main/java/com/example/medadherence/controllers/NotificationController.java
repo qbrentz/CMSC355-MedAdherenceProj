@@ -1,7 +1,10 @@
 package com.example.medadherence.controllers;
 
 import com.example.medadherence.models.Notification;
+import com.example.medadherence.models.Patient;
 import com.example.medadherence.services.NotificationService;
+import com.example.medadherence.services.PatientService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,15 +18,28 @@ public class NotificationController {
     @Autowired
     private NotificationService notificationService;
 
+    @Autowired
+    private PatientService patientService;
+
     // Get all notifications
     @GetMapping
     public List<Notification> getAllNotifications() {
         return notificationService.getAllNotifications();
     }
 
+    // Get Notifications by patientID
+    @GetMapping("/api/getByPatient/{userID}")
+    public ResponseEntity<List<Notification>> getByPatient(@RequestBody Long userID){
+        Patient patient = patientService.getPatientById(userID);
+        notificationService.checkForMissedDoses(patient);
+        notificationService.checkAndNotifyLowStock(patient);
+        return ResponseEntity.ok(notificationService.getByPatient(userID));
+    }
+
     // Add a new notification
-    @PostMapping
+    @PostMapping("/api/")
     public ResponseEntity<Notification> addNotification(@RequestBody Notification notification) {
+        //notificationService.checkAndNotifyLowStock();
         return ResponseEntity.ok(notificationService.addNotification(notification));
     }
 

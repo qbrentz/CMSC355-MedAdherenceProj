@@ -4,31 +4,32 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 
 export default function Profile() {
-  const usename = localStorage.getItem("username");
-  console.log(usename);
-  const [id, setId] = useState(Number(""));
+  const username = localStorage.getItem("username");
+  console.log(username);
+  const userID = Number(localStorage.getItem("userID"));
+  console.log(userID);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [username, setUserName] = useState("");
+  const [userName, setNewUserName] = useState("");
 
   useEffect(() => {
-    const response = axios.get(`/api/patient/api/username/${usename}`);
+    const response = axios.get(`/api/patient/api/username/${username}`);
     response.then(res => { // Access the response data within the .then block
       console.log(res.data);
-      setId(res.data.id); // Update the state variables correctly
+      //setId(res.data.id); // Update the state variables correctly
       setEmail(res.data.email);
       setName(res.data.name);
-      //setUserName(res.data.username);
+      //setnewUsername(res.data.username);
     });
   }, [username]); // Add username as a dependency
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(`/api/patient/${id}`, {
+      const response = await axios.put(`/api/patient/api/${userID}`, {
       name,
       email,
-      username,
+      userName,
       });
       console.log("Patient Updated:", response.data);
     } catch(error) {
@@ -72,6 +73,12 @@ export default function Profile() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+          </Form.Group>
+
+          <Form.Group className="mb-2">
+            <Form.Label>Username</Form.Label>
+            <Form.Control type="text" placeholder="Enter New Username" value={userName}
+            onChange={(e) => setNewUserName(e.target.value)}/>
           </Form.Group>
           <Button type="submit" variant="primary">
             Save Changes
