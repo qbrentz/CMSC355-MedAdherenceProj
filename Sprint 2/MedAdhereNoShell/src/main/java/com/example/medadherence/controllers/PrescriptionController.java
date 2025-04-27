@@ -35,7 +35,7 @@ public class PrescriptionController {
     }
 
     // Get a prescription by ID
-     @GetMapping("/api/getBy/{id}")
+    @GetMapping("/api/getBy/{id}")
     public ResponseEntity<Prescription> getPrescriptionById(@PathVariable Long id) {
         Prescription prescription = prescriptionService.getPrescriptionById(id);
         if (prescription != null) {

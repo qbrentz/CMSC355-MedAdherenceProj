@@ -1,8 +1,11 @@
 package controlTests;
 
 import com.example.medadherence.models.MedicationLog;
+import com.example.medadherence.models.Patient;
 import com.example.medadherence.models.Prescription;
+import com.example.medadherence.services.PatientService;
 import com.example.medadherence.services.MedicationLogService;
+import com.example.medadherence.services.PrescriptionService;
 import com.example.medadherence.controllers.MedicationLogController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +31,12 @@ public class MedicationLogControllerTest {
     @InjectMocks
     private MedicationLogController medicationLogController;
 
+    @Mock
+    private PrescriptionService prescriptionService;
+
+    @Mock
+    private PatientService patientService;
+
     @Test
     void getAllLogs_ReturnsList() {
         // Arrange
@@ -42,17 +51,26 @@ public class MedicationLogControllerTest {
     }
 
 
-/* 
-    @Test
+ 
+   /* @Test
     void addLog_ReturnsCreatedLog() {
         // Arrange
-        Prescription prescription = new Prescription();
+        
         LocalDateTime timeStamp = LocalDateTime.now();
-        MedicationLog log = new MedicationLog(timeStamp, prescription);
+        Long patientID = 123L;
+        Long prescriptionID = 123L;
+        Patient patient = new Patient("john","jdoe@test.com","jdoe");
+        patient.setId(patientID);
+        Prescription prescription = new Prescription("test",1123, 123, "test","testMed","testSched", patient);
+        prescription.setId(prescriptionID);
+
+        MedicationLog log = new MedicationLog(timeStamp, prescriptionID, patientID);
+        log.setPatient(patient);
+        log.setPrescription(prescription);
         when(medicationLogService.addLog(any(MedicationLog.class))).thenReturn(log);
 
         // Act
-        ResponseEntity<MedicationLog> response = medicationLogController.addLog(prescription);
+        ResponseEntity<MedicationLog> response = medicationLogController.addMedicationLog(log);
 
         // Assert
         assertNotNull(response.getBody());

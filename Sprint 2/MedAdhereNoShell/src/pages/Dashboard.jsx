@@ -73,10 +73,7 @@ export default function Dashboard() {
     }
   };
   
-  const resetLogForm = () => {
-    setLogPrescriptionId("");
-    setLogTime("");
-  };
+  
   
 
   const handleAddOrUpdatePrescription = async (e) => {

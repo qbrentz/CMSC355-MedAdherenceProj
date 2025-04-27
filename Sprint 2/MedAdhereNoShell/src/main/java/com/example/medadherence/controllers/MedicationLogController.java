@@ -3,21 +3,18 @@ package com.example.medadherence.controllers;
 import com.example.medadherence.models.MedicationLog;
 import com.example.medadherence.models.Patient;
 import com.example.medadherence.models.Prescription;
-import com.example.medadherence.repositories.PatientRepository;
-import com.example.medadherence.repositories.PrescriptionRepository;
 import com.example.medadherence.services.PatientService;
 import com.example.medadherence.services.PrescriptionService;
 import com.example.medadherence.services.MedicationLogService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-//import java.util.Map;
-import java.util.Map;
+
 
 @RestController
 @RequestMapping(value = "/api/medication_logs")
@@ -25,11 +22,6 @@ public class MedicationLogController {
 
     @Autowired
     private MedicationLogService medicationLogService;
-    @Autowired
-    private PatientRepository PatientRepository;
-    @Autowired
-    private PrescriptionRepository PrescriptionRepository;
-    
     @Autowired
     private PrescriptionService prescriptionService;
     @Autowired
@@ -56,21 +48,14 @@ public class MedicationLogController {
     public ResponseEntity<MedicationLog> addMedicationLog(@RequestBody MedicationLog newLog) {
         Patient patient = PatientService.getPatientById(newLog.patientID);
         Prescription prescription = prescriptionService.getPrescriptionById(newLog.prescriptionID);
+        prescription.inventory = (prescription.inventory - 1);
         newLog.setTimestamp(LocalDateTime.now());
         newLog.setPatient(patient);
         newLog.setPrescription(prescription);
         
         return ResponseEntity.ok(medicationLogService.addLog(newLog));
 }
-    
 
-    /*@PostMapping("/api/newLog/{log}")
-    public ResponseEntity<MedicationLog> addLog(@PathVariable MedicationLog log) {
-        //MedicationLog new_log = new MedicationLog(log.getTimestamp(), log.getPrescription());
-        return ResponseEntity.ok(medicationLogService.addLog(log));
-    }*/
-
-    
 
     // Get a medication log by ID
     @GetMapping("/api/{id}")

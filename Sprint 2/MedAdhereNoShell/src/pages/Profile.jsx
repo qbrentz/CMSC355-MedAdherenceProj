@@ -4,30 +4,38 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 
 export default function Profile() {
-  const username = localStorage.getItem("username");
-  console.log(username);
+  const usename = localStorage.getItem("username");
+  console.log(usename);
   const [id, setId] = useState(Number(""));
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [username, setUserName] = useState("");
 
   useEffect(() => {
-    const response = axios.get(`/api/patient/api/username/${username}`);
+    const response = axios.get(`/api/patient/api/username/${usename}`);
     response.then(res => { // Access the response data within the .then block
       console.log(res.data);
       setId(res.data.id); // Update the state variables correctly
       setEmail(res.data.email);
       setName(res.data.name);
+      //setUserName(res.data.username);
     });
   }, [username]); // Add username as a dependency
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios.put(`/api/patient/${id}`, {
+    try {
+      const response = await axios.put(`/api/patient/${id}`, {
       name,
       email,
-    }).then(() => alert("Profile updated!"))
-      .catch(() => alert("Update failed"));
+      username,
+      });
+      console.log("Patient Updated:", response.data);
+    } catch(error) {
+      console.error("error updating patient details:", error);
+    }
   };
+
 
   const handleDelete = (e) => {
     e.preventDefault();
@@ -43,10 +51,10 @@ export default function Profile() {
   return (
     <div>
       <Navbar />
-      <Container className="mt-4">
+      <Container className="mt-8">
         <h3>Edit Profile</h3>
         <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
+          <Form.Group className="mb-2">
             <Form.Label>Name</Form.Label>
             <Form.Control
               type="text"
@@ -55,7 +63,8 @@ export default function Profile() {
               onChange={(e) => setName(e.target.value)}
             />
           </Form.Group>
-          <Form.Group className="mb-3">
+          
+          <Form.Group className="mb-2">
             <Form.Label>Email</Form.Label>
             <Form.Control
               type="email"
@@ -68,7 +77,7 @@ export default function Profile() {
             Save Changes
           </Button>
         </Form>
-        <div className="mt-3">
+        <div className="mt-2">
           <Button variant="danger" onClick={handleDelete}>
             Delete Account
           </Button>
